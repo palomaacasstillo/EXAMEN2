@@ -35,7 +35,6 @@ def user_input_features():
 
 df = user_input_features()
 
-
 examen = pd.read_csv('EXAMEN_FINAL1.csv', encoding='latin-1')
 X = examen[["City", "year", "month"]]
 y = examen["AverageTemperature"]
@@ -44,7 +43,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random
 model = DecisionTreeRegressor(max_depth=5, random_state=0)
 model.fit(X_train, y_train)
 
-prediction = classifier.predict(df_user)
+prediction = model.predict(df_user)
 
 st.subheader('Predicción de temperatura')
 st.write("la prediction de temperatures es:**${prediccion[0]:.2f}**")
