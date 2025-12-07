@@ -13,36 +13,36 @@ import pandas as pd
 from sklearn import datasets
 from sklearn.tree import DecisionTreeClassifier
 
-
 st.write(''' # Predicción de temperatura ''')
-st.image("gastos.jpg", caption="predicción de temperatura de mexico")
+st.image("gastos.jpg", caption="predicción de temperatura de México")
 
-st.header('Datos de evaluación')
+st.header('Datos de predicción')
 
 def user_input_features():
-  # Entrada
-  Pclass = st.number_input('Clase{Acapulco:0, Aguascalientes:1, Acuña:2}:', min_value=0, max_value=2, value = 1, step = 1)
-  Sex = st.number_input('mes:', min_value=0, max_value=1, value = 0, step = 1)
-  Age = st.number_input('año:', min_value=0, max_value=100, value = 0, step = 1)
 
-  user_input_data = {'clase': clase,
-                     'mes': mes,
-                     'año': año,
-                     "dia"}
+    ciudad = st.number_input('Ciudad: {Acapulco:0, Aguascalientes:1, Acuña:2}:', min_value=0, max_value=2, value=1, step=1)
+    mes = st.number_input('mes:', min_value=1, max_value=12, value=1, step=1)
+    year = st.number_input('año:', min_value=2000, max_value=2025, value=2020, step=1)
 
-  features = pd.DataFrame(user_input_data, index=[0])
+    features = pd.DataFrame({
+                              "City": [ciudad],
+                              "year": [year],
+                              "month": [mes]
+                              })
 
-  return features
+    return features
 
 df = user_input_features()
 
-examen =  pd.read_csv('EXAMEN2.csv', encoding='latin-1')
-X = examen.drop(columns='AverageTemperature')
-Y = examen['AverageTemperature']
 
-classifier = DecisionTreeClassifier(max_depth=3, criterion='gini', min_samples_leaf=25, max_features=4, random_state=1613497)
-classifier.fit(X, Y)
+examen = pd.read_csv('EXAMEN_FINAL1.csv', encoding='latin-1')
+X = examen[["City", "year", "month"]]
+y = examen["AverageTemperature"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=0)
+model = DecisionTreeRegressor(max_depth=5, random_state=0)
+model.fit(X_train, y_train)
 
-prediction = classifier.predict(df)
+prediction = classifier.predict(df_user)
 
 st.subheader('Predicción de temperatura')
+st.write("la prediction de temperatures es:**${prediccion[0]:.2f}**")
